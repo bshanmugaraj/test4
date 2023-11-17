@@ -4,30 +4,30 @@ provider "aws" {
 resource "aws_route53_zone" "primary" {
     name = "example.com"
   }
-resource "aws_route53_record" "www-dev" {
+resource "aws_route53_record" "grid-us-west-2a" {
   zone_id = aws_route53_zone.primary.zone_id
   name    = "www"
   type    = "CNAME"
   ttl     = 5
 
   weighted_routing_policy {
-    weight = var.service1_www-dev
+    weight = var.grid-us-west-2a
   }
 
-  set_identifier = "dev"
+  set_identifier = "grid-us-west-2a"
   records        = ["dev.example.com"]
 }
 
-resource "aws_route53_record" "www-live" {
+resource "aws_route53_record" "grid-us-east-1" {
   zone_id = aws_route53_zone.primary.zone_id
   name    = "www"
   type    = "CNAME"
   ttl     = 5
 
   weighted_routing_policy {
-    weight = var.service1_www-live
+    weight = var.grid-us-east-1
   }
 
-  set_identifier = "live"
+  set_identifier = "grid-us-east-1"
   records        = ["live.example.com"]
 }
