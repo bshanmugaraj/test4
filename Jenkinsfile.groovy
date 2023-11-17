@@ -17,11 +17,11 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 script {
-                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AKIA4IOHQQ5W7EOLZ5TX', secretKeyVariable: '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']]) {
+                    withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', accessKeyVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_KEY']]) {
                         
                         // You can now use AWS credentials in this block
                         sh "echo 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'"
-                        sh "echo 'AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}'"
+                        sh "echo 'AWS_SECRET_ACCESS_KEY=${AWS_SECRET_KEY}'"
                     // Initialize and plan Terraform
                     sh "terraform init"
                     sh "terraform plan -var='grid-us-west-2a=${params.'grid-us-west-2a'}' -var='grid-us-east-1=${params.'grid-us-east-1'}' -var='tim-us-west-2a=${params.'tim-us-west-2a'}' -var='tim-us-east-1=${params.'tim-us-east-1'}'"
