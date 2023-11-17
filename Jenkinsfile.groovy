@@ -4,9 +4,9 @@ pipeline {
     parameters {
         choice(name: 'REGION', choices: 'us-west-2a us-east-1', description: 'Select AWS Region')
         string(name: 'grid-us-west-2a', defaultValue: '50', description: 'Weight for grid-us-west-2a')
-        choice(name: 'grid-us-east-1', defaultValue: '50', description: 'Weight for grid-us-east-1')
-        choice(name: 'tim-us-west-2a', defaultValue: '50', description: 'Weight for tim-us-west-2a')
-        choice(name: 'tim-us-east-1', defaultValue: '50', description: 'Weight for tim-us-east-1')
+        string(name: 'grid-us-east-1', defaultValue: '50', description: 'Weight for grid-us-east-1')
+        string(name: 'tim-us-west-2a', defaultValue: '50', description: 'Weight for tim-us-west-2a')
+        string(name: 'tim-us-east-1', defaultValue: '50', description: 'Weight for tim-us-east-1')
     }
 
     stages {
