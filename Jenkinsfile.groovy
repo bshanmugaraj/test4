@@ -7,15 +7,20 @@ pipeline {
         string(name: 'grid-us-east-1', defaultValue: '50', description: 'Weight for grid-us-east-1')
         string(name: 'tim-us-west-2a', defaultValue: '50', description: 'Weight for tim-us-west-2a')
         string(name: 'tim-us-east-1', defaultValue: '50', description: 'Weight for tim-us-east-1')
-        string(name: 'AWS_ACCESS_KEY_ID', description: 'AWS Access Key ID')
-        string(name: 'AWS_SECRET_ACCESS_KEY', description: 'AWS Secret Access Key')
+        string(name: 'AWS_CREDENTIALS_ID', description: 'AWS Credentials ID')
+     
     }
 
     stages {
         stage('Terraform Plan') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: '7469a313-8421-4018-85f2-5fd390bd6e80', variable: 'AWS_ACCESS_KEY_ID'), string(credentialsId: '7469a313-8421-4018-85f2-5fd390bd6e80', variable: 'AWS_SECRET_ACCESS_KEY')]) {
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                        credentialsId: params.'7469a313-8421-4018-85f2-5fd390bd6e80',
+                        secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
+                    ]]) {
                         
                         // You can now use AWS credentials in this block
                         sh "echo 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}'"
