@@ -15,10 +15,11 @@ pipeline {
         stage('Terraform Plan') {
             steps {
                 script {
+                    def awsCredentials = credentials(params.'7469a313-8421-4018-85f2-5fd390bd6e80')
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
                         accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                        credentialsId: params.'7469a313-8421-4018-85f2-5fd390bd6e80',
+                        credentialsId: awsCredentials.id,
                         secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
                     ]]) {
                         
