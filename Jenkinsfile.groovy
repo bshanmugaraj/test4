@@ -6,7 +6,7 @@ node {
     sh "sudo rm -rf ${projectRootDirectory} || true ; mkdir -p ${projectRootDirectory}"
     checkout scm
     withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY'),
-                     string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_KEY')]) 
+                     string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_KEY')]) {
     
 
     stage('Terraform Plan') {
@@ -20,6 +20,7 @@ node {
             // Run Terraform init and apply for each file
             sh "terraform init -input=false -backend-config=backend.config -var-file=variables.tfvars"
             sh "terraform plan -var-file=variables.tfvars -var 'file=$file'"
-        }
-    }
+         }
+      }
+   }
 }
