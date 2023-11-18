@@ -19,3 +19,4 @@ node {
             sh "terraform plan -var-file=variables.tfvars -var 'file=$file'"
         }
     }
+}
