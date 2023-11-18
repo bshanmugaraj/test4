@@ -1,24 +1,21 @@
-pipeline {
-    agent any
-
-    parameters {
-        /* choice(name: 'REGION', choices: 'us-west-2a us-east-1', description: 'Select AWS Region') */
-        string(name: 'grid-us-west-2a', defaultValue: '50', description: 'Weight for grid-us-west-2a')
-        string(name: 'grid-us-east-1', defaultValue: '50', description: 'Weight for grid-us-east-1')
-        string(name: 'tim-us-west-2a', defaultValue: '50', description: 'Weight for tim-us-west-2a')
-        string(name: 'tim-us-east-1', defaultValue: '50', description: 'Weight for tim-us-east-1')     
+node {
+    stage('Checkout') {
+        // Assuming your Terraform configurations are in a directory named 'terraform'
+        checkout scm
+        withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY'),
+        string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_KEY')])
     }
 
-    stages {
-        stage('Terraform Plan') {
-            steps {
-                script {
-                    // Initialize and plan Terraform
-                    sh "terraform init"
-                    sh "terraform plan -var='grid-us-west-2a=${params.'grid-us-west-2a'}' -var='grid-us-east-1=${params.'grid-us-east-1'}' -var='tim-us-west-2a=${params.'tim-us-west-2a'}' -var='tim-us-east-1=${params.'tim-us-east-1'}'"
-                    }    
-                }
-          
-            }
+    stage('Terraform Plan') {
+        // List of Terraform files to Plan
+        def terraformFiles = ['tim.tf', 'grid.tf']
+
+        // Loop through each Terraform file and apply
+        terraformFiles.each { file ->
+            echo "Applying Terraform configuration in $file"
+            
+            // Run Terraform init and apply for each file
+            sh "terraform init -input=false -backend-config=backend.config -var-file=variables.tfvars"
+            sh "terraform plan -var-file=variables.tfvars -var 'file=$file'"
         }
     }
