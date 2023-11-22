@@ -19,7 +19,7 @@ node {
             
             // Run Terraform init and apply for each file
             sh "terraform init -input=false -backend-config=backend.config -var-file=variables.tfvars"
-            sh "terraform plan -var-file=variables.tfvars -var 'file=$file'"
+            sh "terraform plan -var 'file=$file'"
          }
       }
    }
