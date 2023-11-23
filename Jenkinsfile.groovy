@@ -9,8 +9,8 @@ node {
                      string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_KEY')]) {
     parameters {
         string(name: 'TARGET_NAME', defaultValue: 'www-rr', description: 'Target Name of the CNAME')
-        string(name: 'TARGET_RECORD', defaultValue: 'prod.example.com', description: 'Target Record')
-        string(name: 'TARGET_RECORD', defaultValue: 'nonprod.example.com', description: 'Target Record')
+        string(name: 'TARGET_CH2', defaultValue: 'prod.example.com', description: 'Target Record')
+        string(name: 'TARGET_HO2', defaultValue: 'nonprod.example.com', description: 'Target Record')
         string(name: 'NEW_WEIGHT', defaultValue: '0', description: 'New Weight for record change')
     }
 
@@ -23,7 +23,7 @@ node {
                     ]
 
                     // Find the record matching the criteria
-                    def targetRecord = dnsRecords.find { it.name == params.TARGET_NAME && it.records.contains(params.TARGET_RECORD) }
+                    def targetRecord = dnsRecords.find { it.name == params.TARGET_NAME && it.records.contains(params.TARGET_CH2) }
 
                     // Check if the target record was found
                     if (targetRecord) {
@@ -37,7 +37,7 @@ node {
                         }
                     } else {
                         // If the record is not found, print a message
-                        echo "Record with name='${params.TARGET_NAME}' and records='${params.TARGET_RECORD}' not found."
+                        echo "Record with name='${params.TARGET_NAME}' and records='${params.TARGET_CH2}' not found."
                     }
         }
     }
