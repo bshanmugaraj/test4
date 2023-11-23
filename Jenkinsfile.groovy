@@ -10,6 +10,7 @@ node {
     parameters {
         string(name: 'TARGET_NAME', defaultValue: 'www-rr', description: 'Target Name of the CNAME')
         string(name: 'TARGET_RECORD', defaultValue: 'prod.example.com', description: 'Target Record')
+        string(name: 'TARGET_RECORD', defaultValue: 'nonprod.example.com', description: 'Target Record')
         string(name: 'NEW_WEIGHT', defaultValue: '0', description: 'New Weight for record change')
     }
 
@@ -18,7 +19,7 @@ node {
                     // Sample data representing DNS records
                     def dnsRecords = [
                         [name: 'www-rr', records: ['prod.example.com'], weight: 0],
-                        [name: 'other-rr', records: ['test.example.com'], weight: 50],
+                        [name: 'www-rr', records: ['nonprod.example.com'], weight: 100],
                     ]
 
                     // Find the record matching the criteria
