@@ -14,7 +14,15 @@ node {
         string(name: 'NEW_WEIGHT', defaultValue: '0', description: 'New Weight for record change')
     }
 
-    stage('Terraform Plan') {
+    stage('Plan') {
+                    // Enforce a 5 min timeout on init. TF init has a tendency to hang trying to download the aws provider plugin.
+                    timeout(5) {
+                        // init the configured s3 backend
+                        sh "terraform init -backend=true"
+                            }
+
+                            // get the current remote state:
+                            sh "terraform get"
 
                     // Sample data representing DNS records
                     def dnsRecords = [
@@ -34,7 +42,14 @@ node {
                         echo "Updated DNS Records:"
                         dnsRecords.each { record ->
                             echo "${record.name}: ${record.records} - Weight: ${record.weight}"
-                        }
+                    sh "set +e; terraform plan -out=plan.out -detailed-exitcode $EXTRA_ARGS; echo \$? > status"
+                    def exitCode = readFile('status').trim()
+                    echo "Terraform Plan Exit Code: ${exitCode}"
+
+                    if (exitCode == "0") {
+                        currentBuild.result = 'SUCCESS'
+                    }
+                        
                     } else {
                         // If the record is not found, print a message
                         echo "Record with name='${params.TARGET_NAME}' and records='${params.TARGET_CH2}' not found."
