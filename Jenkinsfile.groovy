@@ -42,17 +42,16 @@ node {
                     sh "set +e; terraform plan -out=plan.out -detailed-exitcode; echo \$? > status"
                     def exitCode = readFile('status').trim()
                     echo "Terraform Plan Exit Code: ${exitCode}"
-                }
                     
                     if (exitCode == "0") {
                         currentBuild.result = 'SUCCESS'
-                    
-                
-                
-                } else {
+                    } else {
+                        currentBuild.result = 'FAILURE'
+                    }
+                }
+            } else {
                     // If the record is not found, print a message
                     echo "Record with name='${params.TARGET_NAME}' and records='${params.TARGET_CH2}' not found."
-                }
             }
         }
     }
