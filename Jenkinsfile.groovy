@@ -42,10 +42,11 @@ node {
                     sh "set +e; terraform plan -out=plan.out -detailed-exitcode $EXTRA_ARGS; echo \$? > status"
                     def exitCode = readFile('status').trim()
                     echo "Terraform Plan Exit Code: ${exitCode}"
+                }
                     
                     if (exitCode == "0") {
                         currentBuild.result = 'SUCCESS'
-                    }
+                    
                 
                 
                 } else {
