@@ -39,7 +39,7 @@ node {
                 echo "Updated DNS Records:"
                 dnsRecords.each { record ->
                     echo "${record.name}: ${record.records} - Weight: ${record.weight}"
-                    sh "set +e; terraform plan -out=plan.out -detailed-exitcode $EXTRA_ARGS; echo \$? > status"
+                    sh "set +e; terraform plan -out=plan.out -detailed-exitcode; echo \$? > status"
                     def exitCode = readFile('status').trim()
                     echo "Terraform Plan Exit Code: ${exitCode}"
                 }
