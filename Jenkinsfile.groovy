@@ -13,11 +13,11 @@ node {
     stage('Update File') {
         println "${env.SERVICE}"
         println "$SERVICE"
-        if ("${dev.example.com}" != "") {
-            updateContent("${SERVICE}.tf","dev.example.com","${dev.example.com}");
+        if ("${dev}" != "") {
+            updateContent("${SERVICE}.tf","dev.example.com","${dev}");
         }
-        else if ("${prod.example.com}" != "") {
-            updateContent("${SERVICE}.tf","prod.example.com","${prod.example.com}");
+        else if ("${prod}" != "") {
+            updateContent("${SERVICE}.tf","prod.example.com","${prod}");
         }
         else
              println "No weights was assigned";
