@@ -10,8 +10,8 @@ node {
 
     
     stage('Update File') {
-        println ${env.SERVICE}
-        println $SERVICE
+        println "${env.SERVICE}"
+        println "$SERVICE"
     }
 
 
