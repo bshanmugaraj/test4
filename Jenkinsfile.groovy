@@ -8,11 +8,8 @@ node {
     withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY'),
                      string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_KEY')]){
 
-    
-    stage('Update File') {
-        println "${env.SERVICE}"
-        println "$SERVICE"
-        def updateContent(String filePath, String recordName, String weightValue){
+
+def updateContent(String filePath, String recordName, String weightValue){
         def contents = new File( filePath ).text.readLines()
         def newContents = new ArrayList();
         for(int i=0;i<contents.size();i++){
@@ -30,18 +27,17 @@ node {
             }
         
         }
-
         File f = new File(filePath)
         PrintWriter writer = new PrintWriter(f)
         newContents.each { id -> writer.println(id) }
         writer.close()
         }
-
-
-        def extractInts(String input){
+def extractInts(String input){
         input.findAll( /\d+/ )*.toInteger()
         }
-
+    stage('Update File') {
+        println "${env.SERVICE}"
+        println "$SERVICE"
         if ("${dev.example.com}" != "") {
             updateContent("${SERVICE}.tf","dev.example.com","${dev.example.com}");
         }
