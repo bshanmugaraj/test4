@@ -31,16 +31,16 @@ node {
         
         }
 
-            File f = new File(filePath)
-            PrintWriter writer = new PrintWriter(f)
-            newContents.each { id -> writer.println(id) }
-            writer.close()
+        File f = new File(filePath)
+        PrintWriter writer = new PrintWriter(f)
+        newContents.each { id -> writer.println(id) }
+        writer.close()
         }
 
 
         def extractInts(String input){
         input.findAll( /\d+/ )*.toInteger()
-    }
+        }
 
         if ("${dev.example.com}" != "") {
             updateContent("${SERVICE}.tf","dev.example.com","${dev.example.com}");
@@ -50,7 +50,7 @@ node {
         }
         else
              println "No weights was assigned";
-    }
+        }
 
 
     stage('Plan') {
