@@ -42,10 +42,10 @@ node {
         input.findAll( /\d+/ )*.toInteger()
     }
 
-        if ("${dev.example.com}" != "" {
+        if ("${dev.example.com}" != "") {
             updateContent("${SERVICE}.tf","dev.example.com","${dev.example.com}");
         }
-        else if ("${prod.example.com}" != "" {
+        else if ("${prod.example.com}" != "") {
             updateContent("${SERVICE}.tf","prod.example.com","${prod.example.com}");
         }
         else
