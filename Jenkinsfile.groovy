@@ -1,3 +1,4 @@
+@NonCPS
 node {
     stage ("Checkout"){
     projectRootDirectory = pwd() 
@@ -65,5 +66,5 @@ def updateContent(String filePath, String recordName, String weightValue){
         writer.close()
         }
 def extractInts(String input){
-        input.findAll( /\d+/ ).toUnique()
+        input.findAll( /\d+/ )*.toInteger()
         }
