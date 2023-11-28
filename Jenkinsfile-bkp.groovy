@@ -8,6 +8,7 @@ node {
     withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY'),
                      string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_KEY')]) {
         parameters {
+            string(name: 'TERRAFORM_FILE', defaultValue: 'grid.tf', description: 'Specify the Terraform file to run')
             string(name: 'TARGET_NAME', defaultValue: 'www-rr', description: 'Target Name of the CNAME')
             string(name: 'TARGET_CH2', defaultValue: 'prod.example.com', description: 'Target Record')
             string(name: 'TARGET_HO2', defaultValue: 'nonprod.example.com', description: 'Target Record')
@@ -38,6 +39,9 @@ node {
                 echo "Updated DNS Records:"
                 dnsRecords.each { record ->
                     echo "${record.name}: ${record.records} - Weight: ${record.weight}"
+                    // Use sed to replace the placeholder in the specified Terraform file
+                    sh "sed -i 's/\\${weight_placeholder}/${record.weight}/' ${params.TERRAFORM_FILE}"
+
                     sh "set +e; terraform plan -out=plan.out -detailed-exitcode; echo \$? > status"
                     def exitCode = readFile('status').trim()
                     echo "Terraform Plan Exit Code: ${exitCode}"
