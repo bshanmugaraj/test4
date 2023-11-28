@@ -28,7 +28,7 @@ node {
             ]
 
             // Find the record matching the criteria
-            def targetRecord = dnsRecords.find { it.name == params.TARGET_NAME && it.records.contains(params.prod.example.com) }
+            def targetRecord = dnsRecords.find { it.name == params.TARGET_NAME && it.records.contains(params.'prod.example.com') }
             // Check if the target record was found
             if (targetRecord) {
                 // Change the weight to the user-provided value
