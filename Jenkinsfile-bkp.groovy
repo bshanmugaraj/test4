@@ -8,11 +8,10 @@ node {
     withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY'),
                      string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_KEY')]) {
         parameters {
-            string(name: 'TERRAFORM_FILE', defaultValue: 'grid.tf', description: 'Specify the Terraform file to run')
+            string(name: 'TERRAFORM_FILE', defaultValue: 'tim.tf', description: 'Specify the Terraform file to run')
             string(name: 'TARGET_NAME', defaultValue: 'www-rr', description: 'Target Name of the CNAME')
-            string(name: 'TARGET_CH2', defaultValue: 'prod.example.com', description: 'Target Record')
-            string(name: 'TARGET_HO2', defaultValue: 'nonprod.example.com', description: 'Target Record')
-            string(name: 'NEW_WEIGHT', defaultValue: '0', description: 'New Weight for record change')
+            string(name: 'prod.example.com', defaultValue: '0', description: 'Target Record')
+            string(name: 'non.example.com', defaultValue: '100', description: 'Target Record')
         }
         stage('Plan') {
             // Enforce a 5 min timeout on init. TF init has a tendency to hang trying to download the aws provider plugin.
@@ -29,7 +28,7 @@ node {
             ]
 
             // Find the record matching the criteria
-            def targetRecord = dnsRecords.find { it.name == params.TARGET_NAME && it.records.contains(params.TARGET_CH2) }
+            def targetRecord = dnsRecords.find { it.name == params.TARGET_NAME && it.records.contains(params.prod.example.com) }
             // Check if the target record was found
             if (targetRecord) {
                 // Change the weight to the user-provided value
