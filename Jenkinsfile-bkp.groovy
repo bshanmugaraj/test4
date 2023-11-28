@@ -55,7 +55,7 @@ node {
                 }
             } else {
                 // If the record is not found, print a message
-                echo "Record with name='${params.TARGET_NAME}' and records='${params.TARGET_CH2}' not found."
+                echo "Record with name='${params.TARGET_NAME}' and records='${params.'prod.example.com'}' not found."
             }
         }
     }
