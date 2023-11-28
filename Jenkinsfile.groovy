@@ -68,5 +68,5 @@ def updateContent(String filePath, String recordName, String weightValue){
         }
 @NonCPS
 def extractInts(String input){
-        input.findAll( /\d+/ )*.toInteger()
+        input.findAll( /\d+/ ).toInteger()
         }
