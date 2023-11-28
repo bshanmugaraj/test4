@@ -15,10 +15,10 @@ node {
         println "${env.SERVICE}"
         println "$SERVICE"
         if ("${dev}" != "") {
-            updateContent("${SERVICE}.tf","dev.example.com","${dev}");
+            updateContent("/var/lib/jenkins/workspace/Traffic_shapping-naresh/${SERVICE}.tf","dev.example.com","${dev}");
         }
         else if ("${prod}" != "") {
-            updateContent("${SERVICE}.tf","prod.example.com","${prod}");
+            updateContent("/var/lib/jenkins/workspace/Traffic_shapping-naresh/${SERVICE}.tf","prod.example.com","${prod}");
         }
         else
              println "No weights was assigned";
