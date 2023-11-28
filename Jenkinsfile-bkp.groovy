@@ -13,7 +13,7 @@ node {
             string(name: 'prod.example.com', defaultValue: '0', description: 'Target Record')
             string(name: 'non.example.com', defaultValue: '100', description: 'Target Record')
         }
-        stage('Plan') {
+        stage('Apply') {
             // Enforce a 5 min timeout on init. TF init has a tendency to hang trying to download the aws provider plugin.
             timeout(5) {
                 // init the configured s3 backend
@@ -47,6 +47,8 @@ node {
 
                     if (exitCode == "0") {
                         currentBuild.result = 'SUCCESS'
+                        echo "running terraform apply since code is ok to proceed"
+                        sh "set +e; terraform apply -out=apply.out -detailed-exitcode; echo \$? > status"
                     } else {
                         currentBuild.result = 'FAILURE'
                     }
