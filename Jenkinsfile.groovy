@@ -11,6 +11,7 @@ node {
 
 
     stage('Update File') {
+        sh "cd $pwd"
         println "${env.SERVICE}"
         println "$SERVICE"
         if ("${dev}" != "") {
