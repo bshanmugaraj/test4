@@ -1,4 +1,3 @@
-@NonCPS
 node {
     stage ("Checkout"){
     projectRootDirectory = pwd() 
@@ -42,6 +41,8 @@ node {
     }    
 }
 }
+
+@NonCPS
 def updateContent(String filePath, String recordName, String weightValue){
         def contents = new File( filePath ).text.readLines()
         def newContents = new ArrayList();
@@ -65,6 +66,7 @@ def updateContent(String filePath, String recordName, String weightValue){
         newContents.each { id -> writer.println(id) }
         writer.close()
         }
+@NonCPS
 def extractInts(String input){
         input.findAll( /\d+/ )*.toInteger()
         }
