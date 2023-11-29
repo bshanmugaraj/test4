@@ -1,72 +1,65 @@
 node {
-    stage ("Checkout"){
-    projectRootDirectory = pwd() 
-    println ("project root: " + projectRootDirectory)
-    println ("cleaning project root: " + projectRootDirectory)
-    sh "sudo rm -rf ${projectRootDirectory} || true ; mkdir -p ${projectRootDirectory}"
-    checkout scm
-    withCredentials([string(credentialsId: 'AWS_ACCESS_KEY_ID', variable: 'AWS_ACCESS_KEY'),
-                     string(credentialsId: 'AWS_SECRET_ACCESS_KEY', variable: 'AWS_SECRET_KEY')]){
+    // Define parameters
+    properties([
+        parameters([
+            choice(name: 'selectedServices', choices: ['ServiceA', 'ServiceB', 'ServiceC'], description: 'Select services', multiSelect: true),
+            string(name: 'regionWeight', defaultValue: '1', description: 'Enter weight for the region')
+        ])
+    ])
 
-
-
-    stage('Update File') {
-        sh "cd $pwd"
-        println "${env.SERVICE}"
-        println "$SERVICE"
-        if ("${dev}" != "") {
-            updateContent("/var/lib/jenkins/workspace/Traffic_shapping-naresh/${SERVICE}.tf","dev.example.com","${dev}");
-        }
-        else if ("${prod}" != "") {
-            updateContent("/var/lib/jenkins/workspace/Traffic_shapping-naresh/${SERVICE}.tf","prod.example.com","${prod}");
-        }
-        else
-             println "No weights was assigned";
-        }
-
-
-    stage('Plan') {
-            
-        }
-    
-    stage('Apply'){
-
-    }
-    stage('Slack update'){
-        
-    } 
-    stage('Commit'){
-
-    }
-    }    
-}
-}
-
-@NonCPS
-def updateContent(String filePath, String recordName, String weightValue){
-        def contents = new File( filePath ).text.readLines()
-        def newContents = new ArrayList();
-        for(int i=0;i<contents.size();i++){
-            newContents.add(i, contents.get(i));
-            if (contents.get(i).contains(recordName)){
-                for(int j = i; j>=0;j--){
-                    if(contents.get(j).contains("weight")){
-                        String str = contents.get(j);
-                        String[] weight = extractInts(str);
-                        str = contents.get(j).replace(weight[0], weightValue);
-                        newContents.set(j, str);
-                        break;
-                    }
-                }
+    stage('Commit to GitHub') {
+        steps {
+            script {
+                // Assuming GitHub credentials are configured
+                checkout scm
+                sh 'git config user.name "YourServiceAccount"'
+                sh 'git config user.email "service.account@example.com"'
+                sh 'git add .'
+                sh 'git commit -m "Committing values"'
+                sh 'git push origin master'
             }
-        
         }
-        File f = new File(filePath)
-        PrintWriter writer = new PrintWriter(f)
-        newContents.each { id -> writer.println(id) }
-        writer.close()
+    }
+
+    stage('Terraform Plan') {
+        steps {
+            script {
+                // Execute Terraform plan
+                sh 'terraform plan'
+            }
         }
-@NonCPS
-def extractInts(String input){
-        input.findAll( /\d+/ ).toInteger()
+    }
+
+    stage('Approval') {
+        steps {
+            script {
+                // Manual approval step
+                input 'Proceed with Terraform apply?'
+            }
         }
+    }
+
+    stage('Terraform Apply') {
+        steps {
+            script {
+                // Execute Terraform apply
+                sh 'terraform apply -auto-approve'
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                // Optionally, post to Slack on success
+                slackSend(channel: '#your-channel', message: 'Jenkins job succeeded!')
+            }
+        }
+        failure {
+            script {
+                // Optionally, post to Slack on failure
+                slackSend(channel: '#your-channel', message: 'Jenkins job failed!')
+            }
+        }
+    }
+}
