@@ -26,7 +26,7 @@ node {
                 [name: 'www-rr', records: ['prod.example.com']],
                 [name: 'www-rr', records: ['nonprod.example.com']]
             ]
-            echo "$dnsRecords"
+            echo "${dnsRecords}"
 
             // Find the record matching the criteria
             def targetRecord = dnsRecords.find { it.name == params.TARGET_NAME && it.record == params.TARGET_RECORD }
