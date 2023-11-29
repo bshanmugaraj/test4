@@ -29,8 +29,11 @@ node {
             echo "${dnsRecords}"
 
             // Find the record matching the criteria
-            def targetRecord = dnsRecords.find { it.name == params.TARGET_NAME && it.record == params.TARGET_RECORD }
+            def targetRecord = dnsRecords.find { record -> 
+                record.name == params.TARGET_NAME && record.record == params.TARGET_RECORD 
+                }
             echo "${targetRecord}"
+
             // Check if the target record was found
             if (targetRecord) {
                 // Change the weight to the user-provided value
