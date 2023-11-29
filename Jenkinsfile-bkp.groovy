@@ -23,9 +23,10 @@ node {
             sh "terraform get"
             // Sample data representing DNS records
             def dnsRecords = [
-                    [name: 'www-rr', record: ['prod.example.com']],
-                    [name: 'www-rr', record: ['nonprod.example.com']]
+                [name: 'www-rr', records: ['prod.example.com']],
+                [name: 'www-rr', records: ['nonprod.example.com']]
             ]
+            echo "$dnsRecords"
 
             // Find the record matching the criteria
             def targetRecord = dnsRecords.find { it.name == params.TARGET_NAME && it.record == params.TARGET_RECORD }
