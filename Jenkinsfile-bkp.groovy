@@ -30,7 +30,7 @@ node {
 
             // Find the record matching the criteria
             def targetRecord = dnsRecords.find { record -> 
-                record.name == params.TARGET_NAME && record.record == params.TARGET_RECORD 
+                record.name == params.TARGET_NAME && record.records == params.TARGET_RECORD 
                 }
             echo "${targetRecord}"
 
