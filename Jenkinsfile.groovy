@@ -26,8 +26,10 @@ node {
            sh "set +e; terraform plan -out=plan.out -detailed-exitcode; echo \$? > status"
            def exitCode = readFile('status').trim()
            echo "Terraform Plan Exit Code: ${exitCode}"
-
-
+    }
+    stage('Approval') {
+      // Manual approval step
+      input 'Proceed with Terraform apply?'
     }
   }
 }    
