@@ -23,7 +23,7 @@ node {
            sh "terraform get"
            
            // run a plan, save its output in a file, exit with detailed 0,1,2 codes
-           sh "set +e; terraform plan -out=plan.out -detailed-exitcode $EXTRA_ARGS; echo \$? > status"
+           sh "set +e; terraform plan -out=plan.out -detailed-exitcode; echo \$? > status"
            def exitCode = readFile('status').trim()
            echo "Terraform Plan Exit Code: ${exitCode}"
 
