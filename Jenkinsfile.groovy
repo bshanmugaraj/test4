@@ -11,7 +11,7 @@ node {
 
 
     stage('Update File') {
-    echp "update file stage"
+        echo "update file stage"
     }
       
     stage('Plan') {
@@ -24,7 +24,7 @@ node {
     }
         
 
-    stage('Terraform Apply') {
+  /*  stage('Terraform Apply') {
       // Execute Terraform apply
       sh 'set +e; terraform apply; echo \$? > status.apply'
       def applyExitCode = readFile('status.apply').trim()
@@ -33,7 +33,7 @@ node {
       } else 
          slackSend channel: "${env.SLACK_CHANNEL_NAME}", color: 'danger', message: "@here Apply Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER} (<${env.BUILD_URL}console|Open>)"
          currentBuild.result = 'FAILURE'
-    }
+    }*/
     }
     }
 }
