@@ -10,5 +10,24 @@ node {
         parameters {
 
         }
+    stage('Update File') {
+        echo "update file stage"
     }
+    stage('Plan') {
+    // Enforce a 5 min timeout on init. TF init has a tendency to hang trying to download the aws provider plugin.
+    timeout(5) {
+           // init the configured s3 backend
+           sh "terraform init -backend=true"
+           }
+           // get the current remote state:
+           sh "terraform get"
+           
+           // run a plan, save its output in a file, exit with detailed 0,1,2 codes
+           sh "set +e; terraform plan -out=plan.out -detailed-exitcode $EXTRA_ARGS; echo \$? > status"
+           def exitCode = readFile('status').trim()
+           echo "Terraform Plan Exit Code: ${exitCode}"
+
+
+    }
+  }
 }    
