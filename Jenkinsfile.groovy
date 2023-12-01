@@ -12,28 +12,7 @@ node {
 
     stage('Update File') {
         echo "update file stage"
+      }
     }
-      
-    stage('Plan') {
-      sh 'terraform plan'
-    }
-      
-    stage('Approval') {
-      // Manual approval step
-      input 'Proceed with Terraform apply?'
-    }
-        
-
-  /*  stage('Terraform Apply') {
-      // Execute Terraform apply
-      sh 'set +e; terraform apply; echo \$? > status.apply'
-      def applyExitCode = readFile('status.apply').trim()
-      if (applyExitCode == "0") {
-         slackSend channel: "${env.SLACK_CHANNEL_NAME}", color: 'good', message: "@here Changes Applied ${env.JOB_NAME} - ${env.BUILD_NUMBER} (<${env.BUILD_URL}console|Open>)"
-      } else 
-         slackSend channel: "${env.SLACK_CHANNEL_NAME}", color: 'danger', message: "@here Apply Failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER} (<${env.BUILD_URL}console|Open>)"
-         currentBuild.result = 'FAILURE'
-    }*/
-    }
-    }
+  }
 }
